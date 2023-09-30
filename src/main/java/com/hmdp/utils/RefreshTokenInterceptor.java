@@ -29,11 +29,13 @@ public class RefreshTokenInterceptor implements HandlerInterceptor {
         if(StrUtil.isBlank(token)){
 //            不存在也放行
             return true;
+
         }
         Map<Object, Object> userMap = stringRedisTemplate.opsForHash().entries(token);
         //3. 判断用户是否存在
         if (userMap.isEmpty()){
             return true;
+
         }
         UserDTO userDTO = BeanUtil.fillBeanWithMap(userMap, new UserDTO(), false);
 
