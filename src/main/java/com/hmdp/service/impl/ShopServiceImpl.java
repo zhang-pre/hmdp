@@ -3,6 +3,7 @@ package com.hmdp.service.impl;
 import cn.hutool.core.lang.TypeReference;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -46,15 +47,17 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
 //            return getById(id1);
 //        }, 30L, TimeUnit.MINUTES);
         //RedisData中使用了泛型，导致这里不认识，只能使用Object了
-        Object o  = cacheClient.cacheBreakdownWithLogicExpire("cache:shop", "lock:shop",
+        Object o = cacheClient.cacheBreakdownWithLogicExpire("cache:shop", "lock:shop",
                 id, Shop.class, (id1) -> {
                     return getById(id1);
                 }, 30L, TimeUnit.MINUTES);
+        JSONObject jsonObject = (JSONObject) o;
+        Shop shop = JSONUtil.toBean(jsonObject,Shop.class);
 //        Shop shop = cacheBreakdownWithLogicExpire(id);
-        if(o==null){
+        if(shop==null){
             return Result.fail("商铺不存在");
         }
-        return Result.ok(o);
+        return Result.ok(shop);
     }
     Shop cacheBreakdownWithMutex(Long id){ //缓存击穿,使用互斥来解决
         String key = "cache:shop" + id;

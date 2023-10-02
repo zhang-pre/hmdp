@@ -101,16 +101,16 @@ public class CacheClient {  //基于StringRedisTemplate封装一个缓存工具�
                 R r1 = dbFallback.apply(id);
                 //写入redis
                 this.setWithLogicExpire(key,r1,time,unit);
-                log.debug("成功打入redis中");
+//                log.debug("成功打入redis中");
             });
         }catch (Exception e){
-            log.debug("发生异常");
+//            log.debug("发生异常");
             throw new RuntimeException(e);
         }
         finally {
             unlock(LockKey);
         }
-        log.debug("执行到这里了吗");
+//        log.debug("执行到这里了吗");
         return r;
     }
 
