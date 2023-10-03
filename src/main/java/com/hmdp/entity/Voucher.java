@@ -75,6 +75,9 @@ public class Voucher implements Serializable {
     /**
      * 库存
      */
+//    通常情况下，当你使用MyBatis-Plus进行数据库操作时，它会自动将Java实体类的字段与数据库表的列进行映射。
+//    但有时你可能需要在实体类中包含一些额外的字段，这些字段在数据库表中没有对应的列，但在Java代码中需要使用。
+//    这些额外的字段可以使用@TableField(exist = false)注解来标记。
     @TableField(exist = false)
     private Integer stock;
 
